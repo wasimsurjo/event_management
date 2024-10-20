@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Capacity Warning</title>
+</head>
+<body>
+    <h1>Capacity Warning</h1>
+    <div id="warning"></div>
+
+    <script>
+        fetch('/events')
+        .then(response => response.json())
+        .then(events => {
+            const warningDiv = document.getElementById('warning');
+            events.forEach(event => {
+                if (event.capacity > 80) {
+                    warningDiv.innerHTML += `<p>Warning: Event ${event.name} is nearing full capacity (${event.capacity}%)</p>`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

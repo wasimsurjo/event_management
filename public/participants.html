@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Participants</title>
+</head>
+<body>
+    <h1>Participants List</h1>
+    <ul id="participants"></ul>
+
+    <script>
+        fetch('/participants')
+        .then(response => response.json())
+        .then(participants => {
+            const participantsList = document.getElementById('participants');
+            participants.forEach(participant => {
+                const li = document.createElement('li');
+                li.textContent = `${participant.name} (${participant.email})`;
+                participantsList.appendChild(li);
+            });
+        });
+    </script>
+</body>
+</html>
