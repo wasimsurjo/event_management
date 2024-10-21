@@ -1,5 +1,5 @@
 <?php
-require_once '/../db/database.php';
+require_once(__DIR__ . './../db/database.php');
 
 class LocationController {
     public static function getAllLocations() {
@@ -26,6 +26,19 @@ class LocationController {
         $stmt = $db->prepare("UPDATE locations SET name=?, capacity=?, address=?, city=?, postal_code=?, updated_at=NOW() WHERE location_id=?");
         $stmt->execute([$data['name'], $data['capacity'], $data['address'], $data['city'], $data['postal_code'], $id]);
         echo json_encode(['message' => 'Location updated']);
+    }
+
+    // Method to delete a location
+    public static function deleteLocation($id) {
+        global $db;
+        $stmt = $db->prepare("DELETE FROM locations WHERE location_id=?");
+        $stmt->execute([$id]);
+        if ($stmt->rowCount() > 0) {
+            echo json_encode(['message' => 'Location deleted']);
+        } else {
+            header('HTTP/1.0 404 Not Found');
+            echo json_encode(['error' => 'Location not found']);
+        }
     }
 }
 ?>

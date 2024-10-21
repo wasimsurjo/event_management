@@ -1,5 +1,5 @@
 <?php
-require_once '/../db/database.php';
+require_once(__DIR__ . './../db/database.php');
 
 class ParticipantController {
     public static function getAllParticipants() {
@@ -26,6 +26,19 @@ class ParticipantController {
         $stmt = $db->prepare("UPDATE participants SET name=?, email=?, phone_number=?, status=?, registered_at=NOW() WHERE participant_id=?");
         $stmt->execute([$data['name'], $data['email'], $data['phone_number'], $data['status'], $id]);
         echo json_encode(['message' => 'Participant updated']);
+    }
+
+    // Method to delete a participant
+    public static function deleteParticipant($id) {
+        global $db;
+        $stmt = $db->prepare("DELETE FROM participants WHERE participant_id=?");
+        $stmt->execute([$id]);
+        if ($stmt->rowCount() > 0) {
+            echo json_encode(['message' => 'Participant deleted']);
+        } else {
+            header('HTTP/1.0 404 Not Found');
+            echo json_encode(['error' => 'Participant not found']);
+        }
     }
 }
 ?>
